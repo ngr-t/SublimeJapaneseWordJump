@@ -73,8 +73,7 @@ class TinySegmenterWordJumpForward(_TinySegmenterWordJumpCommand):
                 s.begin() - self._get_tokenized_text_start_point(s.begin()))
             for s in sel]
         sel.clear()
-        for s in next_sel:
-            sel.add(sublime.Region(s, s))
+        sel.add_all(sublime.Region(s, s) for s in next_sel)
 
 
 class TinySegmenterWordJumpBack(_TinySegmenterWordJumpCommand):
@@ -91,5 +90,4 @@ class TinySegmenterWordJumpBack(_TinySegmenterWordJumpCommand):
             for s in sel]
         print(next_sel)
         sel.clear()
-        for s in next_sel:
-            sel.add(sublime.Region(s, s))
+        sel.add_all(sublime.Region(s, s) for s in next_sel)
