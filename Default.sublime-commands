@@ -1,0 +1,10 @@
+[
+  {
+  	"caption": "TinySegmenterWordJump: Jump Forward",
+  	"command": "tiny_segmenter_word_jump_forward"
+  },
+  {
+  	"caption": "TinySegmenterWordJump: Jump Back",
+  	"command": "tiny_segmenter_word_jump_back"
+  }
+]
