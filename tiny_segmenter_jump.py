@@ -34,24 +34,24 @@ def _get_previous_word_end(text: str, cursor_pos: int) -> int:
     current = 0
     for token in SEGMENTER.tokenize(text):
         current += len(token)
-        if cursor_pos < current:
+        if cursor_pos <= current:
             return previous - cursor_pos
         previous = current
     return len(text) - cursor_pos
 
 
-class _TinySegmenterCommand(sublime_plugin.TextCommand):
+class _TinySegmenterWordJumpCommand(sublime_plugin.TextCommand):
     """Jump based on tokens segmented by `tinysegmenter`."""
 
     def _get_tokenized_text_start_point(self, pos):
         view = self.view
         curr_row = view.rowcol(pos)[0]
-        return view.text_point(curr_row - 1, 0),
+        return max(0, view.text_point(curr_row - 1, 0))
 
     def _get_tokenized_text_end_point(self, pos):
         view = self.view
         curr_row = view.rowcol(pos)[0]
-        return view.text_point(curr_row + 2, -1),
+        return max(self.view.size(), view.text_point(curr_row + 2, -1))
 
     def _get_nearby_region(self, pos: int) -> str:
         region = sublime.Region(
@@ -60,7 +60,7 @@ class _TinySegmenterCommand(sublime_plugin.TextCommand):
         return self.view.substr(region)
 
 
-class TinySegmenterWordJumpForward(_TinySegmenterCommand):
+class TinySegmenterWordJumpForward(_TinySegmenterWordJumpCommand):
     """Jump forward based on tokens segmented by `tinysegmenter`."""
 
     def run(self, edit):
@@ -72,13 +72,12 @@ class TinySegmenterWordJumpForward(_TinySegmenterCommand):
                 self._get_nearby_region(s.begin()),
                 s.begin() - self._get_tokenized_text_start_point(s.begin()))
             for s in sel]
-        print(next_sel)
         sel.clear()
         for s in next_sel:
             sel.add(sublime.Region(s, s))
 
 
-class TinySegmenterWordJumpBack(sublime_plugin.TextCommand):
+class TinySegmenterWordJumpBack(_TinySegmenterWordJumpCommand):
     """Jump previous based on tokens segmented by `tinysegmenter`."""
 
     def run(self, edit):
