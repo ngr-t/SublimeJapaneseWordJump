@@ -6,5 +6,5 @@ This is a package for Sublime Text 3 which provides word jumping considering Jap
 Commands
 --------
 
-- Japanese Word Jump: Forward
-- Japanese Word Jump: Previous
+- Japanese Word Jump: Jump Forward
+- Japanese Word Jump: Jump Back
