@@ -1,4 +1,4 @@
-"""Jump based on tokens segmented by `tinysegmenter`.
+"""Jumping based on Japanese word tokens segmented by `tinysegmenter`.
 
 Copyright (c) 2016, NEGORO Tetsuya (https://github.com/ngr-t)
 This package is under new BSD License.
@@ -40,8 +40,8 @@ def _get_previous_word_end(text: str, cursor_pos: int) -> int:
     return len(text) - cursor_pos
 
 
-class _TinySegmenterWordJumpCommand(sublime_plugin.TextCommand):
-    """Jump based on tokens segmented by `tinysegmenter`."""
+class _JapaneseWordJumpCommand(sublime_plugin.TextCommand):
+    """Base class for the jump commands."""
 
     def _get_tokenized_text_start_point(self, pos):
         view = self.view
@@ -60,7 +60,7 @@ class _TinySegmenterWordJumpCommand(sublime_plugin.TextCommand):
         return self.view.substr(region)
 
 
-class TinySegmenterWordJumpForward(_TinySegmenterWordJumpCommand):
+class JapaneseWordJumpForward(_JapaneseWordJumpCommand):
     """Jump forward based on tokens segmented by `tinysegmenter`."""
 
     def run(self, edit):
@@ -76,7 +76,7 @@ class TinySegmenterWordJumpForward(_TinySegmenterWordJumpCommand):
         sel.add_all(sublime.Region(s, s) for s in next_sel)
 
 
-class TinySegmenterWordJumpBack(_TinySegmenterWordJumpCommand):
+class JapaneseWordJumpBack(_JapaneseWordJumpCommand):
     """Jump previous based on tokens segmented by `tinysegmenter`."""
 
     def run(self, edit):
